@@ -1,5 +1,7 @@
 # prompt-rail
 
+[English](README.md) · [简体中文](README.zh-CN.md)
+
 A measured prompt iteration skill with **train/test dual-gate scoring** and **anti-overfit rewrite rails**.
 
 Forked from [prompt-smith](https://github.com/Banner-Wang/prompt-smith). Works with any agent that loads Agent Skills (`SKILL.md`).
@@ -25,6 +27,17 @@ Ask the agent: "use prompt-rail to optimize this prompt".
 | Overfit | no hard gate | `gate.py` → `OVERFIT` |
 | Rewrite discipline | one hypothesis / round | + four anti-memorization rules |
 
+## Why anti-overfit
+
+If eval, scoring, and rewrite all run on the same cases, the prompt starts memorizing the suite. prompt-rail enforces:
+
+1. **train** drives diagnosis and rewrite  
+2. **test** is holdout-only — never used to invent rules  
+3. train↑ + test↓ → `OVERFIT` → revert  
+4. Prefer abstract rules; do not paste case surface forms to chase score  
+
+See `references/anti-overfit.md`.
+
 ## Quick commands
 
 ```bash
@@ -37,7 +50,13 @@ python3 $SK/scripts/gate.py \
   --cand-train runs/v1.train.json --cand-test runs/v1.test.json
 ```
 
-See `SKILL.md` and `references/anti-overfit.md` for the full loop.
+See `SKILL.md` for the full loop.
+
+## Dependencies
+
+- Python 3.10+
+- Optional: [PyYAML](https://pypi.org/project/PyYAML/) (only if the suite is `.yaml`; JSON suites need no extra deps)
+- A way to call a model (bundled runners support OpenAI-compatible HTTP, Claude CLI, etc. — see `references/runners.md`)
 
 ## License
 
