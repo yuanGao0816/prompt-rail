@@ -31,6 +31,50 @@ npx skills add yuanGao0816/prompt-rail -g -y
 
 智能体按 `SKILL.md` 自动完成：建 train/test 评测集 → 基线 → 诊断 → 改一处 → 测量 → 门禁（`KEEP` / `REVERT` / `OVERFIT`）。
 
+## 评测用例（train / test）——金标由人把关
+
+**用例不是自动生成就等于正确。** 分数只对「可信的评测集」有意义；请优先使用**人工核对过**的输入与期望输出。
+
+| 来源 | 什么时候用 |
+|------|------------|
+| **你上传 / 提供（推荐）** | 真实日志、已知误分、你已标好并核对过的例子 |
+| **智能体起草，你审批** | 你说清任务后它可拟一批 case —— **跑基线前必须给你看 train/test 列表，确认后再冻** |
+| **无人复核的自动生成** | 只能当草稿，不要当成冻结的权威 suite |
+
+### 如何自己提供用例
+
+1. 写入工作目录的 `suite.yaml`（可从 `assets/suite.template.yaml` 复制改）。
+2. 每条必须有 `split: train` 或 `split: test`，以及 `vars` 和断言 / 期望标签。
+3. 也可以先整理成表格 / CSV / JSON（`输入 → 期望标签 → train|test`），让智能体**只做格式转换进 suite，不要改你的金标**。
+
+用例结构示例：
+
+```yaml
+cases:
+  - name: train-example
+    split: train          # 只有 train 失分才驱动改写
+    vars:
+      user_message: "粘贴你已核对过的真实用户原话"
+    asserts:
+      - {type: json_valid}
+      - {type: json_field_eq, field: intent, equals: troubleshooting}
+
+  - name: test-example
+    split: test           # holdout：禁止把这些原文写进 prompt
+    vars:
+      user_message: "另一条已核对、表述不同的真实原话"
+    asserts:
+      - {type: json_valid}
+      - {type: json_field_eq, field: intent, equals: troubleshooting}
+```
+
+**使用建议**
+
+- 标签先人工（或交叉）核对，再冻结 suite。
+- 各类标签尽量在 train / test 都有覆盖；高代价误分优先放进 **test**。
+- 基线之后：不要同一轮既改 prompt 又改评测集。
+- 已有金标时，对智能体说：「用我这些金标做 suite，不要自己编标签。」
+
 ## 和 prompt-smith 的差异
 
 | | prompt-smith | prompt-rail |

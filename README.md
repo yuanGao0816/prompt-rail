@@ -31,6 +31,50 @@ Talk to the agent — no need to run Python yourself:
 
 The agent follows `SKILL.md`: build a train/test suite → baseline → diagnose → one edit → measure → gate (`KEEP` / `REVERT` / `OVERFIT`).
 
+## Eval cases (train / test) — you own the gold labels
+
+**Cases are not “auto-truth.”** Scores are only as good as the suite. Prefer **human-checked** inputs and expected outputs.
+
+| Source | When to use |
+|--------|-------------|
+| **You upload / provide** (best) | Real logs, known failures, labeled examples you have already verified |
+| **Agent drafts, you approve** | You describe the task; the agent proposes cases — **review the train/test list before baseline** |
+| **Agent-only, unchecked** | Draft only — do not treat as a frozen suite |
+
+### How to provide your own cases
+
+1. Put them in `<workdir>/suite.yaml` (start from `assets/suite.template.yaml`).
+2. Every case needs `split: train` or `split: test`, plus `vars` and asserts / expected labels.
+3. Or give the agent a spreadsheet/CSV/JSON of `input → expected → split` and ask it to **convert only** (do not change your labels).
+
+Example case shape:
+
+```yaml
+cases:
+  - name: train-example
+    split: train          # rewrite signals come from train only
+    vars:
+      user_message: "paste a real user utterance you verified"
+    asserts:
+      - {type: json_valid}
+      - {type: json_field_eq, field: intent, equals: troubleshooting}
+
+  - name: test-example
+    split: test           # holdout — never paste these into the prompt
+    vars:
+      user_message: "another verified utterance, different surface form"
+    asserts:
+      - {type: json_valid}
+      - {type: json_field_eq, field: intent, equals: troubleshooting}
+```
+
+**Rules of thumb**
+
+- Verify labels yourself (or with a reviewer) before freezing the suite.
+- Stratify labels across train and test; put high-cost failure modes in **test**.
+- After baseline, do not change the suite and the prompt in the same iteration.
+- Ask the agent: *"use these gold cases as the suite — don't invent new labels"* when you already have checked data.
+
 ## vs prompt-smith
 
 | | prompt-smith | prompt-rail |
