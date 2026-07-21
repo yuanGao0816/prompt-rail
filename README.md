@@ -16,7 +16,15 @@ npx skills add yuanGao0816/prompt-rail -g -y
 git clone https://github.com/yuanGao0816/prompt-rail.git ~/.agents/skills/prompt-rail
 ```
 
-Ask the agent: "use prompt-rail to optimize this prompt".
+## Usage
+
+Just ask the agent in natural language — you do **not** need to run the Python scripts yourself:
+
+- "use prompt-rail to optimize this prompt"
+- "write a prompt with prompt-rail and iterate until it passes train/test"
+- "reduce overfitting / memorization in this system prompt"
+
+The agent follows `SKILL.md`: build a train/test suite, baseline, then loop diagnose → edit → measure → gate (`KEEP` / `REVERT` / `OVERFIT`).
 
 ## vs prompt-smith
 
@@ -38,11 +46,12 @@ If eval, scoring, and rewrite all run on the same cases, the prompt starts memor
 
 See `references/anti-overfit.md`.
 
-## Quick commands
+## Optional: run the engine yourself
+
+The `scripts/` helpers are what the agent calls under the hood. Only use them if you want to inspect or re-run a step manually:
 
 ```bash
-# SK = wherever this skill is installed
-SK=~/.agents/skills/prompt-rail
+SK=~/.agents/skills/prompt-rail   # or this skill's install path
 python3 $SK/scripts/run_eval.py suite.yaml --prompt prompts/v0.md --split train --out runs/v0.train.json
 python3 $SK/scripts/run_eval.py suite.yaml --prompt prompts/v0.md --split test  --out runs/v0.test.json
 python3 $SK/scripts/gate.py \
@@ -50,11 +59,9 @@ python3 $SK/scripts/gate.py \
   --cand-train runs/v1.train.json --cand-test runs/v1.test.json
 ```
 
-See `SKILL.md` for the full loop.
-
 ## Dependencies
 
-- Python 3.10+
+- Python 3.10+ (for the eval engine the agent invokes)
 - Optional: [PyYAML](https://pypi.org/project/PyYAML/) (only if the suite is `.yaml`; JSON suites need no extra deps)
 - A way to call a model (bundled runners support OpenAI-compatible HTTP, Claude CLI, etc. — see `references/runners.md`)
 

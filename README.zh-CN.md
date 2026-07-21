@@ -16,7 +16,15 @@ npx skills add yuanGao0816/prompt-rail -g -y
 git clone https://github.com/yuanGao0816/prompt-rail.git ~/.agents/skills/prompt-rail
 ```
 
-对智能体说：「用 prompt-rail 优化这个 prompt」即可。
+## 用法
+
+直接用自然语言让智能体执行即可，**不必自己敲 Python 命令**：
+
+- 「用 prompt-rail 优化这个 prompt」
+- 「用 prompt-rail 写一个 prompt，并迭代到 train/test 都过线」
+- 「减少这个 system prompt 的背题 / 过拟合」
+
+智能体会按 `SKILL.md` 自动完成：建 train/test 评测集 → 基线 → 诊断 → 改一处 → 测量 → 门禁（`KEEP` / `REVERT` / `OVERFIT`）。
 
 ## 和 prompt-smith 的差异
 
@@ -38,11 +46,12 @@ git clone https://github.com/yuanGao0816/prompt-rail.git ~/.agents/skills/prompt
 
 详见 `references/anti-overfit.md`。
 
-## 快速命令
+## 可选：自己手动跑引擎
+
+`scripts/` 里的脚本是智能体底层会调用的评测引擎。只有你想自己复查某一步时，才需要手动执行：
 
 ```bash
-# SK = 本 skill 的安装路径
-SK=~/.agents/skills/prompt-rail
+SK=~/.agents/skills/prompt-rail   # 或本 skill 的实际安装路径
 python3 $SK/scripts/run_eval.py suite.yaml --prompt prompts/v0.md --split train --out runs/v0.train.json
 python3 $SK/scripts/run_eval.py suite.yaml --prompt prompts/v0.md --split test  --out runs/v0.test.json
 python3 $SK/scripts/gate.py \
@@ -50,11 +59,9 @@ python3 $SK/scripts/gate.py \
   --cand-train runs/v1.train.json --cand-test runs/v1.test.json
 ```
 
-完整闭环见 `SKILL.md`。
-
 ## 依赖
 
-- Python 3.10+
+- Python 3.10+（供智能体调用评测引擎）
 - 可选：[PyYAML](https://pypi.org/project/PyYAML/)（suite 用 `.yaml` 时需要；用 JSON 则不需要）
 - 一种可调用模型的方式（内置 runner 支持 OpenAI 兼容 HTTP 与 Claude CLI 等，见 `references/runners.md`）
 
