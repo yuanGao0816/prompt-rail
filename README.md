@@ -8,6 +8,12 @@ Forked from [prompt-smith](https://github.com/Banner-Wang/prompt-smith). Works w
 
 ## Install
 
+Ask your agent (recommended):
+
+> Help me install this skill: `npx skills add yuanGao0816/prompt-rail -g -y`
+
+Or run it yourself:
+
 ```bash
 # global (recommended)
 npx skills add yuanGao0816/prompt-rail -g -y

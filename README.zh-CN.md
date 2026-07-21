@@ -8,6 +8,12 @@
 
 ## 安装
 
+直接让智能体帮你装（推荐）：
+
+> 帮我安装这个技能：`npx skills add yuanGao0816/prompt-rail -g -y`
+
+也可以自己执行：
+
 ```bash
 # 全局安装（推荐）
 npx skills add yuanGao0816/prompt-rail -g -y
