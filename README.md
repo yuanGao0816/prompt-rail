@@ -2,8 +2,14 @@
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-[![skills.sh](https://skills.sh/b/yuanGao0816/prompt-rail)](https://skills.sh/yuanGao0816/prompt-rail)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-yuanGao0816%2Fprompt--rail-blue?logo=github)](https://github.com/yuanGao0816/prompt-rail)
+
+<!-- skills.sh install-count badge: add back after the skill appears in the
+     registry (listing is driven by `npx skills add` telemetry, not by pushing
+     a public repo alone):
+[![skills.sh](https://skills.sh/b/yuanGao0816/prompt-rail)](https://skills.sh/yuanGao0816/prompt-rail)
+-->
 
 **Stop rewriting prompts by vibes.** prompt-rail turns prompt work into a measured loop with **train/test dual-gate scoring** and **anti-overfit rails** — so your system prompt learns rules, not answers.
 
