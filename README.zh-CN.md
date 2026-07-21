@@ -2,13 +2,9 @@
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
+[![skills.sh](https://skills.sh/b/yuanGao0816/prompt-rail)](https://skills.sh/yuanGao0816/prompt-rail)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-yuanGao0816%2Fprompt--rail-blue?logo=github)](https://github.com/yuanGao0816/prompt-rail)
-
-<!-- skills.sh 安装量徽章：技能进入目录后再加回来。
-     skills.sh 靠 `npx skills add` 的匿名装机统计收录，不是公开 GitHub 仓就会自动有。
-[![skills.sh](https://skills.sh/b/yuanGao0816/prompt-rail)](https://skills.sh/yuanGao0816/prompt-rail)
--->
 
 **别再凭感觉改 prompt。** prompt-rail 把优化变成可度量闭环：带 **train/test 双门槛** 和 **防背题护栏**，让系统提示词学规则，而不是背答案。
 
