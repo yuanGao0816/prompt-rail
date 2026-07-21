@@ -1,0 +1,68 @@
+# prompt-rail eval suite — copy into <workdir>/suite.yaml and edit.
+#
+# CRITICAL: every case MUST declare split: train | test
+#   train → drives diagnosis & rewrite (may be "seen" by the rewriter)
+#   test  → holdout only; never used to invent prompt rules or few-shots
+#
+# Run:
+#   python3 <skill>/scripts/run_eval.py suite.yaml --prompt prompts/v0.md \
+#       --split train --out runs/v0.train.json
+#   python3 <skill>/scripts/run_eval.py suite.yaml --prompt prompts/v0.md \
+#       --split test  --out runs/v0.test.json
+#   python3 <skill>/scripts/gate.py \
+#       --base-train runs/v0.train.json --base-test runs/v0.test.json \
+#       --cand-train runs/v1.train.json --cand-test runs/v1.test.json
+
+prompt_file: prompts/v0.md
+runner: bash runner.sh
+
+# Dual gate: converge only when BOTH splits clear their thresholds.
+dual_gate: true
+threshold: 0.8            # fallback if thresholds.* omitted
+thresholds:
+  train: 0.90
+  test: 0.92
+
+# Optional LLM-as-judge. Prefer deterministic asserts for classification labels.
+# judge:
+#   command: bash judge.sh
+#   rubric: >
+#     Score 0..1 for label correctness and calibration.
+
+weight_asserts: 1.0
+weight_judge: 0.0
+
+cases:
+  # ── TRAIN: used for diagnosis / rewrite signals ─────────────────────────
+  - name: train-happy-chat
+    split: train
+    vars:
+      user_message: "帮我看看这个接口怎么调"
+    asserts:
+      - {type: json_valid}
+      - {type: json_field_eq, field: intent, equals: chat_consultation}
+
+  - name: train-code-fix
+    split: train
+    vars:
+      user_message: "这段报错怎么修：TypeError: NoneType"
+    asserts:
+      - {type: json_valid}
+      - {type: json_field_eq, field: intent, equals: code_fix}
+
+  # ── TEST: holdout — never quote these strings into the prompt ───────────
+  - name: test-happy-chat
+    split: test
+    vars:
+      user_message: "这个配置项是干什么的"
+    asserts:
+      - {type: json_valid}
+      - {type: json_field_eq, field: intent, equals: chat_consultation}
+
+  - name: test-danger-false-code
+    split: test
+    vars:
+      user_message: "帮我排一下这周任务优先级"
+    asserts:
+      - {type: json_valid}
+      - {type: json_field_eq, field: intent, equals: task_assignment}
