@@ -1,8 +1,8 @@
 # prompt-rail
 
-基于 [prompt-smith](https://github.com/Banner-Wang/prompt-smith) 二次改造的 Agent Skill：保留可度量迭代引擎，并加上 **train/test 双门槛** 与 **防背题改写纪律**。
+A measured prompt iteration skill with **train/test dual-gate scoring** and **anti-overfit rewrite rails**.
 
-Compatible with Cursor / Claude Code / Codex style skill directories (`SKILL.md`).
+Forked from [prompt-smith](https://github.com/Banner-Wang/prompt-smith). Works with any agent that loads Agent Skills (`SKILL.md`).
 
 ## Install
 
@@ -10,11 +10,11 @@ Compatible with Cursor / Claude Code / Codex style skill directories (`SKILL.md`
 # global (recommended)
 npx skills add yuanGao0816/prompt-rail -g -y
 
-# or clone manually
-git clone https://github.com/yuanGao0816/prompt-rail.git ~/.cursor/skills/prompt-rail
+# or clone into your agent's skills directory
+git clone https://github.com/yuanGao0816/prompt-rail.git ~/.agents/skills/prompt-rail
 ```
 
-In Cursor, say:「用 prompt-rail 优化这个 prompt」.
+Ask the agent: "use prompt-rail to optimize this prompt".
 
 ## vs prompt-smith
 
@@ -28,7 +28,8 @@ In Cursor, say:「用 prompt-rail 优化这个 prompt」.
 ## Quick commands
 
 ```bash
-SK=~/.cursor/skills/prompt-rail   # or your clone path
+# SK = wherever this skill is installed
+SK=~/.agents/skills/prompt-rail
 python3 $SK/scripts/run_eval.py suite.yaml --prompt prompts/v0.md --split train --out runs/v0.train.json
 python3 $SK/scripts/run_eval.py suite.yaml --prompt prompts/v0.md --split test  --out runs/v0.test.json
 python3 $SK/scripts/gate.py \

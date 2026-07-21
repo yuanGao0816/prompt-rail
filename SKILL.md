@@ -46,7 +46,7 @@ Load `references/anti-overfit.md` before the first rewrite. Load other refs as n
 ```
 
 Skill root (scripts live here): resolve from this skill's install path, e.g.
-`~/.cursor/skills/prompt-rail/scripts/`.
+`~/.agents/skills/prompt-rail/scripts/` (or wherever your agent installed the skill).
 
 ## Step 1 — FRAME / RULES / PLAN
 
@@ -73,7 +73,7 @@ could pass the suite (`references/authoring.md`). Do not embed eval case text.
 ## Step 2 — BASELINE
 
 ```bash
-SK=~/.cursor/skills/prompt-rail   # adjust if installed elsewhere
+SK=~/.agents/skills/prompt-rail   # or this skill's install path
 python3 $SK/scripts/run_eval.py <workdir>/suite.yaml \
   --prompt <workdir>/prompts/v0.md --split train --out <workdir>/runs/v0.train.json
 python3 $SK/scripts/run_eval.py <workdir>/suite.yaml \
