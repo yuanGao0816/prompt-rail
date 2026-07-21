@@ -2,7 +2,10 @@
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-A measured prompt iteration skill with **train/test dual-gate scoring** and **anti-overfit rewrite rails**.
+[![skills.sh](https://skills.sh/b/yuanGao0816/prompt-rail)](https://skills.sh/yuanGao0816/prompt-rail)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+**Stop rewriting prompts by vibes.** prompt-rail turns prompt work into a measured loop with **train/test dual-gate scoring** and **anti-overfit rails** — so your system prompt learns rules, not answers.
 
 Forked from [prompt-smith](https://github.com/Banner-Wang/prompt-smith). Works with any agent that loads Agent Skills (`SKILL.md`).
 
@@ -15,22 +18,18 @@ Ask your agent (recommended):
 Or run it yourself:
 
 ```bash
-# global (recommended)
 npx skills add yuanGao0816/prompt-rail -g -y
-
-# or clone into your agent's skills directory
-git clone https://github.com/yuanGao0816/prompt-rail.git ~/.agents/skills/prompt-rail
 ```
 
 ## Usage
 
-Just ask the agent in natural language — you do **not** need to run the Python scripts yourself:
+Talk to the agent — no need to run Python yourself:
 
 - "use prompt-rail to optimize this prompt"
-- "write a prompt with prompt-rail and iterate until it passes train/test"
-- "reduce overfitting / memorization in this system prompt"
+- "write a prompt with prompt-rail and iterate until train/test both pass"
+- "this system prompt is overfitting / memorizing cases — fix it with prompt-rail"
 
-The agent follows `SKILL.md`: build a train/test suite, baseline, then loop diagnose → edit → measure → gate (`KEEP` / `REVERT` / `OVERFIT`).
+The agent follows `SKILL.md`: build a train/test suite → baseline → diagnose → one edit → measure → gate (`KEEP` / `REVERT` / `OVERFIT`).
 
 ## vs prompt-smith
 
@@ -52,12 +51,20 @@ If eval, scoring, and rewrite all run on the same cases, the prompt starts memor
 
 See `references/anti-overfit.md`.
 
+## Share
+
+```text
+prompt-rail — measured prompt iteration with train/test anti-overfit rails
+Install: npx skills add yuanGao0816/prompt-rail -g -y
+Repo: https://github.com/yuanGao0816/prompt-rail
+```
+
 ## Optional: run the engine yourself
 
-The `scripts/` helpers are what the agent calls under the hood. Only use them if you want to inspect or re-run a step manually:
+`scripts/` is what the agent calls under the hood. Use only if you want to re-run a step manually:
 
 ```bash
-SK=~/.agents/skills/prompt-rail   # or this skill's install path
+SK=~/.agents/skills/prompt-rail
 python3 $SK/scripts/run_eval.py suite.yaml --prompt prompts/v0.md --split train --out runs/v0.train.json
 python3 $SK/scripts/run_eval.py suite.yaml --prompt prompts/v0.md --split test  --out runs/v0.test.json
 python3 $SK/scripts/gate.py \
@@ -67,9 +74,9 @@ python3 $SK/scripts/gate.py \
 
 ## Dependencies
 
-- Python 3.10+ (for the eval engine the agent invokes)
-- Optional: [PyYAML](https://pypi.org/project/PyYAML/) (only if the suite is `.yaml`; JSON suites need no extra deps)
-- A way to call a model (bundled runners support OpenAI-compatible HTTP, Claude CLI, etc. — see `references/runners.md`)
+- Python 3.10+ (eval engine)
+- Optional: [PyYAML](https://pypi.org/project/PyYAML/) for `.yaml` suites (JSON needs none)
+- A model runner (OpenAI-compatible HTTP, Claude CLI, … — see `references/runners.md`)
 
 ## License
 
